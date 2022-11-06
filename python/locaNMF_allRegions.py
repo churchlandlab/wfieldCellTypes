@@ -160,10 +160,12 @@ def locaNMF_runWithLocalV(animal):
         print(A_reshape.shape)
         
         C = np.matmul(q,locanmf_comps.temporal.data.cpu().numpy().T).T
-        print(C.shape)
+        C_reshape=np.zeros((A.shape[1], nanIdx.shape[0])); C_reshape.fill(np.nan)
+        C_reshape[:, nanIdx] = C
+        print(C_reshape.shape)
         
         sio.savemat(savefolder+'SpatialDisc\\'+cRec+'\\allAC_'+str(maxrank)+'_'+str(round(r2_thresh*100))+'.mat',
-                    {'C':C,
+                    {'C':C_reshape,
                      'A':A_reshape,
                      'lambdas':locanmf_comps.lambdas.data.cpu().numpy(),
                      'areas':areas,
@@ -180,7 +182,7 @@ def locaNMF_runWithLocalV(animal):
             
         torch.cuda.empty_cache()
     
-    print('Finished AC conversion for recordings in '+trainingRange+': ' + animal)
+    print('Finished AC conversion for recordings in: ' + animal)
     
 for cAnimal in animals:
     locaNMF_runWithLocalV(cAnimal)

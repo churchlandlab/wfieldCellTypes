@@ -19,12 +19,10 @@ warnings.filterwarnings("ignore")
 from locanmf import LocaNMF
 import os
         
-# animals = ['CSP32', 'CSP38', 'CSP40', 'CSP41',
-#             'Fez71', 'Fez72', 'Fez73', 'Fez74', 'Fez75',
-#             'Plex60', 'Plex61', 'Plex65', 'Plex66',
-#             'mSM63', 'mSM64', 'mSM65', 'mSM66']
-
-animals = ['mSM63']
+animals = ['CSP32', 'CSP38', 'CSP40', 'CSP41',
+            'Fez71', 'Fez72', 'Fez73', 'Fez74', 'Fez75',
+            'Plex60', 'Plex61', 'Plex65', 'Plex66',
+            'mSM63', 'mSM64', 'mSM65', 'mSM66']
 
 def locaNMF_runWithLocalV(animal):
     os.environ["CUDA_DEVICE_ORDER"]="PCI_BUS_ID"
@@ -163,10 +161,12 @@ def locaNMF_runWithLocalV(animal):
         print(A_reshape.shape)
         
         C = np.matmul(q,locanmf_comps.temporal.data.cpu().numpy().T).T
-        print(C.shape)
+        C_reshape=np.zeros((A.shape[1], nanIdx.shape[0])); C_reshape.fill(np.nan)
+        C_reshape[:, nanIdx] = C
+        print(C_reshape.shape)
         
         sio.savemat(savefolder+'SpatialDisc\\'+cRec+'\\newAC_'+str(maxrank)+'_'+str(loc_thresh)+'.mat',
-                    {'C':C,
+                    {'C':C_reshape,
                      'A':A_reshape,
                      'lambdas':locanmf_comps.lambdas.data.cpu().numpy(),
                      'areas':areas,
@@ -183,7 +183,7 @@ def locaNMF_runWithLocalV(animal):
             
         torch.cuda.empty_cache()
     
-    print('Finished AC conversion for recordings in '+trainingRange+': ' + animal)
+    print('Finished AC conversion for recordings: ' + animal)
     
 for cAnimal in animals:
     locaNMF_runWithLocalV(cAnimal)
