@@ -12,7 +12,7 @@ Markers = {'+','o','*','x','v','d','^','s','>','<', '+','o','*'};
 rng(0);
 
 cPath = 'X:\RawData\'; %path to raw data
-umapPath = 'Q:\BpodImager\umapClust\'; %path to umap results
+umapPath = 'X:\RawData\Celltypes_dataset\umap\'; %path to umap results
 umapFilename = '20220529T1912_localA'; %base name of umap files
 
 %% show locanMF results

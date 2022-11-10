@@ -11,7 +11,7 @@ noCStr = true;
 groupColor = {[1 0 0] [0 0 1] [0 1 0] [0 1 1]}; %colors for groups
 rng(0);
 
-umapPath = 'Q:\BpodImager\umapClust\';
+umapPath = 'X:\RawData\Celltypes_dataset\umap\';
 umapFilename = '20210309T2356_fullA';
 
 %% show locanMF regions
